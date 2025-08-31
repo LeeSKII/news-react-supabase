@@ -51,7 +51,9 @@ export default function NewsList() {
       <div className="w-full">
         <header className="bg-white shadow-sm py-6 mb-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-gray-900 text-center">新闻资讯</h1>
+            <h1 className="text-3xl font-bold text-gray-900 text-center">
+              新闻资讯
+            </h1>
             <p className="text-gray-600 text-center mt-2">最新资讯，实时更新</p>
           </div>
         </header>
@@ -98,7 +100,7 @@ export default function NewsList() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {news.map((news_item) => (
-                <article
+                <div
                   key={news_item.id}
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col"
                 >
@@ -106,27 +108,38 @@ export default function NewsList() {
                     <div className="mb-3">
                       <Link
                         to={`/news/${news_item.id}`}
-                        className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200 line-clamp-2"
+                        className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors duration-200 line-clamp-2 group relative inline-block"
                       >
                         {news_item.title || "无标题"}
+                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                       </Link>
                     </div>
 
                     <div className="text-xs text-gray-500 mb-4">
                       {news_item.host && (
-                        <span className="block mb-1">来源: {news_item.host}</span>
+                        <span className="block mb-1">
+                          来源: {news_item.host}
+                        </span>
                       )}
-                      <span className="block">搜集时间: {formatDate(news_item.created_at)}</span>
+                      <span className="block">
+                        搜集时间: {formatDate(news_item.created_at)}
+                      </span>
                       {news_item.word_count && (
-                        <span className="block mt-1">字数: {news_item.word_count}</span>
+                        <span className="block mt-1">
+                          字数: {news_item.word_count}
+                        </span>
                       )}
                     </div>
 
                     <div className="text-gray-700 mb-4 flex-1">
                       {news_item.article ? (
-                        <p className="text-sm line-clamp-3">{news_item.article}</p>
+                        <p className="text-sm line-clamp-3">
+                          {news_item.article}
+                        </p>
                       ) : (
-                        <p className="text-sm line-clamp-3">{news_item.text || "暂无内容"}</p>
+                        <p className="text-sm line-clamp-3">
+                          {news_item.text || "暂无内容"}
+                        </p>
                       )}
                     </div>
 
@@ -144,8 +157,22 @@ export default function NewsList() {
                     <div className="mt-4 flex justify-between items-center">
                       <Link
                         to={`/news/${news_item.id}`}
-                        className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                        className="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
                       >
+                        <svg
+                          className="w-4 h-4 mr-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          />
+                        </svg>
                         阅读全文
                       </Link>
                       {news_item.url && (
@@ -153,14 +180,28 @@ export default function NewsList() {
                           href={news_item.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                          className="inline-flex items-center px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium rounded-md transition-colors duration-200 border border-gray-300 hover:border-gray-400"
                         >
+                          <svg
+                            className="w-3.5 h-3.5 mr-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                            />
+                          </svg>
                           查看原文
                         </a>
                       )}
                     </div>
                   </div>
-                </article>
+                </div>
               ))}
             </div>
           )}
