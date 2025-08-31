@@ -47,111 +47,124 @@ export default function NewsList() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">新闻资讯</h1>
-          <p className="text-gray-600">最新资讯，实时更新</p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="w-full">
+        <header className="bg-white shadow-sm py-6 mb-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold text-gray-900 text-center">新闻资讯</h1>
+            <p className="text-gray-600 text-center mt-2">最新资讯，实时更新</p>
+          </div>
         </header>
 
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        ) : error ? (
-          <div className="text-center py-12">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg
-                    className="h-5 w-5 text-red-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-700">{error}</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4 max-w-md mx-auto">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg
+                      className="h-5 w-5 text-red-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-red-700">{error}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <button
-              onClick={getNews}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              重试
-            </button>
-          </div>
-        ) : news.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500">暂无新闻数据</p>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {news.map((news_item) => (
-              <article
-                key={news_item.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              <button
+                onClick={getNews}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <Link
-                      to={`/news/${news_item.id}`}
-                      className="text-xl font-semibold text-gray-900 flex-1 hover:text-blue-600 transition-colors duration-200"
-                    >
-                      {news_item.title || "无标题"}
-                    </Link>
-                    {news_item.url && (
-                      <a
-                        href={news_item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ml-4 text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                重试
+              </button>
+            </div>
+          ) : news.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">暂无新闻数据</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {news.map((news_item) => (
+                <article
+                  key={news_item.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col"
+                >
+                  <div className="p-5 flex-1 flex flex-col">
+                    <div className="mb-3">
+                      <Link
+                        to={`/news/${news_item.id}`}
+                        className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200 line-clamp-2"
                       >
-                        查看原文
-                      </a>
-                    )}
-                  </div>
-
-                  <div className="text-sm text-gray-500 mb-4">
-                    {news_item.host && (
-                      <span className="mr-3">来源: {news_item.host}</span>
-                    )}
-                    <span>搜集时间: {formatDate(news_item.created_at)}</span>
-                    {news_item.word_count && (
-                      <span className="ml-3">字数: {news_item.word_count}</span>
-                    )}
-                  </div>
-
-                  <div className="prose max-w-none text-gray-700 mb-4">
-                    {news_item.article ? (
-                      <p>{news_item.article.substring(0, 200)}{news_item.article.length > 200 ? '...' : ''}</p>
-                    ) : (
-                      <p>{(news_item.text || "暂无内容").substring(0, 200)}{(news_item.text || "").length > 200 ? '...' : ''}</p>
-                    )}
-                  </div>
-
-                  {news_item.summarizer && (
-                    <div className="mt-4 p-3 bg-blue-50 rounded-md">
-                      <h3 className="text-sm font-medium text-blue-800 mb-1">
-                        摘要
-                      </h3>
-                      <p className="text-sm text-blue-700">
-                        {news_item.summarizer}
-                      </p>
+                        {news_item.title || "无标题"}
+                      </Link>
                     </div>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+
+                    <div className="text-xs text-gray-500 mb-4">
+                      {news_item.host && (
+                        <span className="block mb-1">来源: {news_item.host}</span>
+                      )}
+                      <span className="block">搜集时间: {formatDate(news_item.created_at)}</span>
+                      {news_item.word_count && (
+                        <span className="block mt-1">字数: {news_item.word_count}</span>
+                      )}
+                    </div>
+
+                    <div className="text-gray-700 mb-4 flex-1">
+                      {news_item.article ? (
+                        <p className="text-sm line-clamp-3">{news_item.article}</p>
+                      ) : (
+                        <p className="text-sm line-clamp-3">{news_item.text || "暂无内容"}</p>
+                      )}
+                    </div>
+
+                    {news_item.summarizer && (
+                      <div className="mt-auto p-3 bg-blue-50 rounded-md">
+                        <h3 className="text-xs font-medium text-blue-800 mb-1">
+                          摘要
+                        </h3>
+                        <p className="text-xs text-blue-700 line-clamp-2">
+                          {news_item.summarizer}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="mt-4 flex justify-between items-center">
+                      <Link
+                        to={`/news/${news_item.id}`}
+                        className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                      >
+                        阅读全文
+                      </Link>
+                      {news_item.url && (
+                        <a
+                          href={news_item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                        >
+                          查看原文
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
