@@ -248,49 +248,69 @@ function NewsDetail() {
             </button>
           </div>
         ) : newsItem ? (
-          <article className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-6">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          <article className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="p-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">
                 {newsItem.title || "无标题"}
               </h1>
 
-              <div className="text-sm text-gray-500 mb-6 pb-4 border-b">
+              <div className="text-sm text-gray-500 mb-8 pb-4 border-b flex flex-wrap items-center">
                 {newsItem.host && (
-                  <span className="mr-3">来源: {newsItem.host}</span>
+                  <span className="mr-4 mb-2">
+                    <span className="font-medium">来源:</span> {newsItem.host}
+                  </span>
                 )}
-                <span>搜集时间: {formatDate(newsItem.created_at)}</span>
+                <span className="mr-4 mb-2">
+                  <span className="font-medium">搜集时间:</span> {formatDate(newsItem.created_at)}
+                </span>
                 {newsItem.word_count && (
-                  <span className="ml-3">字数: {newsItem.word_count}</span>
+                  <span className="mb-2">
+                    <span className="font-medium">字数:</span> {newsItem.word_count}
+                  </span>
                 )}
               </div>
 
-              <div className="prose max-w-none text-gray-700 mb-6">
+              <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed mb-8">
                 {newsItem.article ? (
-                  <p className="whitespace-pre-line">{newsItem.article}</p>
+                  <div className="whitespace-pre-line text-lg leading-relaxed">
+                    {newsItem.article.split('\n\n').map((paragraph, index) => (
+                      <p key={index} className="mb-4 text-justify">{paragraph}</p>
+                    ))}
+                  </div>
                 ) : (
-                  <p className="whitespace-pre-line">{newsItem.text || "暂无内容"}</p>
+                  <div className="whitespace-pre-line text-lg leading-relaxed">
+                    {(newsItem.text || "暂无内容").split('\n\n').map((paragraph, index) => (
+                      <p key={index} className="mb-4 text-justify">{paragraph}</p>
+                    ))}
+                  </div>
                 )}
               </div>
 
               {newsItem.summarizer && (
-                <div className="mt-6 p-4 bg-blue-50 rounded-md">
-                  <h3 className="text-sm font-medium text-blue-800 mb-2">
+                <div className="mt-8 p-5 bg-blue-50 rounded-lg border border-blue-100">
+                  <h3 className="text-base font-semibold text-blue-800 mb-3 flex items-center">
+                    <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
                     摘要
                   </h3>
-                  <p className="text-sm text-blue-700">
+                  <p className="text-blue-700 leading-relaxed">
                     {newsItem.summarizer}
                   </p>
                 </div>
               )}
 
               {newsItem.url && (
-                <div className="mt-6">
+                <div className="mt-8 pt-6 border-t border-gray-200">
                   <a
                     href={newsItem.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="inline-flex items-center px-5 py-2.5 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
                   >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
                     查看原文
                   </a>
                 </div>
