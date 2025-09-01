@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Link, useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -11,6 +12,7 @@ export default function NewsDetail() {
   const [newsItem, setNewsItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [metaData, setMetaData] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
@@ -40,6 +42,16 @@ export default function NewsDetail() {
 
       if (error) throw error;
       setNewsItem(data);
+      
+      // 解析 meta_filter 字段
+      if (data.meta_filter) {
+        try {
+          const parsedMeta = JSON.parse(data.meta_filter);
+          setMetaData(parsedMeta);
+        } catch (parseError) {
+          console.error("解析 meta_filter 失败:", parseError);
+        }
+      }
     } catch (error) {
       console.error("获取新闻详情失败:", error);
       setError("获取新闻详情失败，请稍后重试");
@@ -56,8 +68,19 @@ export default function NewsDetail() {
             to="/"
             className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
           >
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
             </svg>
             返回新闻列表
           </Link>
@@ -104,67 +127,133 @@ export default function NewsDetail() {
                 {newsItem.title || "无标题"}
               </h1>
 
-              <div className="text-sm text-gray-500 mb-8 pb-4 border-b flex flex-wrap items-center">
-                {newsItem.host && (
+              <div className="text-sm text-gray-500 mb-8 pb-4 border-b">
+                <div className="flex flex-wrap items-center mb-3">
+                  {newsItem.host && (
+                    <span className="mr-4 mb-2">
+                      <span className="font-medium">来源:</span> {newsItem.host}
+                    </span>
+                  )}
                   <span className="mr-4 mb-2">
-                    <span className="font-medium">来源:</span> {newsItem.host}
+                    <span className="font-medium">搜集时间:</span>{" "}
+                    {formatDate(newsItem.created_at)}
                   </span>
-                )}
-                <span className="mr-4 mb-2">
-                  <span className="font-medium">搜集时间:</span> {formatDate(newsItem.created_at)}
-                </span>
-                {newsItem.word_count && (
-                  <span className="mb-2">
-                    <span className="font-medium">字数:</span> {newsItem.word_count}
-                  </span>
+                  {newsItem.word_count && (
+                    <span className="mb-2">
+                      <span className="font-medium">字数:</span>{" "}
+                      {newsItem.word_count}
+                    </span>
+                  )}
+                </div>
+                
+                {/* 显示 meta_filter 中的信息 */}
+                {metaData && (
+                  <div className="flex flex-wrap items-center gap-3">
+                    {metaData.type && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        {metaData.type}
+                      </span>
+                    )}
+                    {metaData.tags && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {metaData.tags}
+                      </span>
+                    )}
+                    {metaData.author && (
+                      <span className="text-gray-600">
+                        <span className="font-medium">作者:</span> {metaData.author}
+                      </span>
+                    )}
+                    {metaData.published_date && (
+                      <span className="text-gray-600">
+                        <span className="font-medium">发布时间:</span> {formatDate(metaData.published_date)}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
 
-              <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed mb-8">
-                {newsItem.article ? (
-                  <div className="whitespace-pre-line text-lg leading-relaxed">
-                    {newsItem.article.split('\n\n').map((paragraph, index) => (
-                      <p key={index} className="mb-4 text-justify">{paragraph}</p>
-                    ))}
+              <div className="flex flex-col lg:flex-row gap-8">
+                {/* 左侧：文章内容 */}
+                <div className="flex-1">
+                  <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed">
+                    {newsItem.article ? (
+                      <div className="whitespace-pre-line text-lg leading-relaxed">
+                        {newsItem.article
+                          .split("\n\n")
+                          .map((paragraph, index) => (
+                            <p key={index} className="mb-4 text-justify">
+                              {paragraph}
+                            </p>
+                          ))}
+                      </div>
+                    ) : (
+                      <div className="whitespace-pre-line text-lg leading-relaxed">
+                        {(newsItem.text || "暂无内容")
+                          .split("\n\n")
+                          .map((paragraph, index) => (
+                            <p key={index} className="mb-4 text-justify">
+                              {paragraph}
+                            </p>
+                          ))}
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div className="whitespace-pre-line text-lg leading-relaxed">
-                    {(newsItem.text || "暂无内容").split('\n\n').map((paragraph, index) => (
-                      <p key={index} className="mb-4 text-justify">{paragraph}</p>
-                    ))}
+
+                  {newsItem.url && (
+                    <div className="mt-8 pt-6 border-t border-gray-200">
+                      <a
+                        href={newsItem.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-5 py-2.5 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                      >
+                        <svg
+                          className="w-5 h-5 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                        查看原文
+                      </a>
+                    </div>
+                  )}
+                </div>
+
+                {/* 右侧：摘要 */}
+                {newsItem.summarizer && (
+                  <div className="lg:w-1/3">
+                    <div className="sticky top-8 p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 shadow-sm">
+                      <h3 className="text-lg font-bold text-indigo-900 mb-4 flex items-center">
+                        <svg
+                          className="w-5 h-5 mr-2 text-indigo-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        AI摘要
+                      </h3>
+                      <div className="prose prose-sm max-w-none prose-headings:text-indigo-800 prose-p:text-gray-700 prose-strong:text-indigo-700 prose-em:text-indigo-600 prose-li:text-gray-700 prose-a:text-indigo-600 prose-a:hover:text-indigo-800 prose-a:underline prose-code:text-indigo-700 prose-pre:bg-indigo-100 prose-pre:text-indigo-800">
+                        <ReactMarkdown>{newsItem.summarizer}</ReactMarkdown>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
-
-              {newsItem.summarizer && (
-                <div className="mt-8 p-5 bg-blue-50 rounded-lg border border-blue-100">
-                  <h3 className="text-base font-semibold text-blue-800 mb-3 flex items-center">
-                    <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                    </svg>
-                    摘要
-                  </h3>
-                  <p className="text-blue-700 leading-relaxed">
-                    {newsItem.summarizer}
-                  </p>
-                </div>
-              )}
-
-              {newsItem.url && (
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <a
-                    href={newsItem.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-5 py-2.5 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-                  >
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    查看原文
-                  </a>
-                </div>
-              )}
             </div>
           </article>
         ) : (
