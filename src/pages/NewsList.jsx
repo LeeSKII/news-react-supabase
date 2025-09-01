@@ -33,7 +33,7 @@ export default function NewsList() {
       setError(null);
       const { data, error } = await supabase
         .from("News")
-        .select("*")
+        .select("id, title, host, created_at, describe_text, word_count, url")
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -132,28 +132,10 @@ export default function NewsList() {
                     </div>
 
                     <div className="text-gray-700 mb-4 flex-1">
-                      {news_item.article ? (
-                        <p className="text-sm line-clamp-3">
-                          {news_item.article}
-                        </p>
-                      ) : (
-                        <p className="text-sm line-clamp-3">
-                          {news_item.text || "暂无内容"}
-                        </p>
-                      )}
+                      <p className="text-sm line-clamp-3">
+                        {news_item.describe_text}
+                      </p>
                     </div>
-
-                    {news_item.summarizer && (
-                      <div className="mt-auto p-3 bg-blue-50 rounded-md">
-                        <h3 className="text-xs font-medium text-blue-800 mb-1">
-                          摘要
-                        </h3>
-                        <p className="text-xs text-blue-700 line-clamp-2">
-                          {news_item.summarizer}
-                        </p>
-                      </div>
-                    )}
-
                     <div className="mt-4 flex justify-between items-center">
                       <Link
                         to={`/news/${news_item.id}`}
