@@ -36,17 +36,19 @@ export default function NewsDetail() {
       setError(null);
       const { data, error } = await supabase
         .from("News")
-        .select("*")
+        .select(
+          "title, host, created_at, word_count, meta_filter, article, text, summarizer, url"
+        )
         .eq("id", id)
         .single();
 
       if (error) throw error;
       setNewsItem(data);
-      
+
       // 解析 meta_filter 字段
       if (data.meta_filter) {
         try {
-          const parsedMeta = JSON.parse(data.meta_filter);
+          const parsedMeta = data.meta_filter;
           setMetaData(parsedMeta);
         } catch (parseError) {
           console.error("解析 meta_filter 失败:", parseError);
@@ -145,37 +147,90 @@ export default function NewsDetail() {
                     </span>
                   )}
                 </div>
-                
+
                 {/* 显示 meta_filter 中的信息 */}
                 {metaData && (
-                  <div className="flex flex-wrap items-center gap-3">
-                    {metaData.type && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                        {metaData.type}
-                      </span>
-                    )}
+                  <div className="space-y-4">
+                    {/* 标题和类型 */}
+                    <div className="flex flex-wrap items-center gap-3">
+                      {metaData.title && (
+                        <h2 className="text-lg font-semibold text-gray-800">
+                          {metaData.title}
+                        </h2>
+                      )}
+                      {metaData.type && (
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                          {metaData.type}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* 作者和发布时间 */}
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                      {metaData.author && (
+                        <div className="flex items-center">
+                          <svg className="w-4 h-4 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                          </svg>
+                          <span className="font-medium">作者:</span> {metaData.author}
+                        </div>
+                      )}
+                      {metaData.published_date && (
+                        <div className="flex items-center">
+                          <svg className="w-4 h-4 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                          </svg>
+                          <span className="font-medium">发布时间:</span> {formatDate(metaData.published_date)}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 标签 */}
                     {metaData.tags && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {metaData.tags}
-                      </span>
-                    )}
-                    {metaData.author && (
-                      <span className="text-gray-600">
-                        <span className="font-medium">作者:</span> {metaData.author}
-                      </span>
-                    )}
-                    {metaData.published_date && (
-                      <span className="text-gray-600">
-                        <span className="font-medium">发布时间:</span> {formatDate(metaData.published_date)}
-                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {metaData.tags.split(',').map((tag, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200"
+                          >
+                            {tag.trim()}
+                          </span>
+                        ))}
+                      </div>
                     )}
                   </div>
                 )}
               </div>
 
-              <div className="flex flex-col lg:flex-row gap-8">
-                {/* 左侧：文章内容 */}
-                <div className="flex-1">
+              <div className="flex flex-col gap-8">
+                {/* AI摘要 */}
+                {newsItem.summarizer && (
+                  <div>
+                    <div className="p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 shadow-sm">
+                      <h3 className="text-lg font-bold text-indigo-900 mb-4 flex items-center">
+                        <svg
+                          className="w-5 h-5 mr-2 text-indigo-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        AI摘要
+                      </h3>
+                      <div className="prose prose-sm max-w-none prose-headings:text-indigo-800 prose-p:text-gray-700 prose-strong:text-indigo-700 prose-em:text-indigo-600 prose-li:text-gray-700 prose-a:text-indigo-600 prose-a:hover:text-indigo-800 prose-a:underline prose-code:text-indigo-700 prose-pre:bg-indigo-100 prose-pre:text-indigo-800">
+                        <ReactMarkdown>{newsItem.summarizer}</ReactMarkdown>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 文章内容 */}
+                <div>
                   <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed">
                     {newsItem.article ? (
                       <div className="whitespace-pre-line text-lg leading-relaxed">
@@ -227,32 +282,6 @@ export default function NewsDetail() {
                     </div>
                   )}
                 </div>
-
-                {/* 右侧：摘要 */}
-                {newsItem.summarizer && (
-                  <div className="lg:w-1/3">
-                    <div className="sticky top-8 p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl border border-indigo-100 shadow-sm">
-                      <h3 className="text-lg font-bold text-indigo-900 mb-4 flex items-center">
-                        <svg
-                          className="w-5 h-5 mr-2 text-indigo-600"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        AI摘要
-                      </h3>
-                      <div className="prose prose-sm max-w-none prose-headings:text-indigo-800 prose-p:text-gray-700 prose-strong:text-indigo-700 prose-em:text-indigo-600 prose-li:text-gray-700 prose-a:text-indigo-600 prose-a:hover:text-indigo-800 prose-a:underline prose-code:text-indigo-700 prose-pre:bg-indigo-100 prose-pre:text-indigo-800">
-                        <ReactMarkdown>{newsItem.summarizer}</ReactMarkdown>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </article>
