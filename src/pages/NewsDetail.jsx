@@ -4,8 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+  "https://jnzoquhmgpjbqcabgxrd.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impuem9xdWhtZ3BqYnFjYWJneHJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1MDc4OTgsImV4cCI6MjA3MjA4Mzg5OH0.BKMFZNbTgGf5yxfAQuFbA912fISlbbL3GE6YDn-OkaA"
 );
 
 export default function NewsDetail() {
@@ -169,18 +169,38 @@ export default function NewsDetail() {
                     <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                       {metaData.author && (
                         <div className="flex items-center">
-                          <svg className="w-4 h-4 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                          <svg
+                            className="w-4 h-4 mr-1 text-gray-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                              clipRule="evenodd"
+                            />
                           </svg>
-                          <span className="font-medium">作者:</span> {metaData.author}
+                          <span className="font-medium">作者:</span>{" "}
+                          {metaData.author}
                         </div>
                       )}
                       {metaData.published_date && (
                         <div className="flex items-center">
-                          <svg className="w-4 h-4 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                          <svg
+                            className="w-4 h-4 mr-1 text-gray-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                              clipRule="evenodd"
+                            />
                           </svg>
-                          <span className="font-medium">发布时间:</span> {formatDate(metaData.published_date)}
+                          <span className="font-medium">发布时间:</span>{" "}
+                          {formatDate(metaData.published_date)}
                         </div>
                       )}
                     </div>
@@ -188,7 +208,7 @@ export default function NewsDetail() {
                     {/* 标签 */}
                     {metaData.tags && (
                       <div className="flex flex-wrap gap-2">
-                        {metaData.tags.split(',').map((tag, index) => (
+                        {metaData.tags.split(",").map((tag, index) => (
                           <span
                             key={index}
                             className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200"
