@@ -222,7 +222,7 @@ export default function NewsDetail() {
                         </svg>
                         AI摘要
                       </h3>
-                      <div className="prose prose-sm max-w-none prose-headings:text-indigo-800 prose-p:text-gray-700 prose-strong:text-indigo-700 prose-em:text-indigo-600 prose-li:text-gray-700 prose-a:text-indigo-600 prose-a:hover:text-indigo-800 prose-a:underline prose-code:text-indigo-700 prose-pre:bg-indigo-100 prose-pre:text-indigo-800">
+                      <div className="prose prose-base max-w-none prose-headings:text-indigo-800 prose-p:text-gray-700 prose-strong:text-indigo-700 prose-em:text-indigo-600 prose-li:text-gray-700 prose-a:text-indigo-600 prose-a:hover:text-indigo-800 prose-a:underline prose-code:text-indigo-700 prose-pre:bg-indigo-100 prose-pre:text-indigo-800 [&>*]:leading-relaxed [&>p]:mb-4 [&>h1,&>h2,&>h3,&>h4,&>h5,&>h6]:mb-3 [&>ul,&>ol]:mb-4 [&>li]:mb-2">
                         <ReactMarkdown>{newsItem.summarizer}</ReactMarkdown>
                       </div>
                     </div>
