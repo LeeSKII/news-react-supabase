@@ -220,6 +220,34 @@ export default function NewsDetail() {
                     )}
                   </div>
                 )}
+
+                {/* 阅读原文按钮 */}
+                {newsItem.url && (
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <a
+                      href={newsItem.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                    >
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                      阅读原文
+                    </a>
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-col gap-8">
@@ -275,32 +303,6 @@ export default function NewsDetail() {
                     )}
                   </div>
 
-                  {newsItem.url && (
-                    <div className="mt-8 pt-6 border-t border-gray-200">
-                      <a
-                        href={newsItem.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-5 py-2.5 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-                      >
-                        <svg
-                          className="w-5 h-5 mr-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
-                        </svg>
-                        查看原文
-                      </a>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
