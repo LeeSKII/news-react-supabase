@@ -107,7 +107,7 @@ export default function NewsList() {
                   <div className="p-5 flex-1 flex flex-col">
                     <div className="mb-3">
                       <a
-                        href={`/news-react-supabase/#/news-react-supabase/news/${news_item.id}`}
+                        href={`/news-react-supabase/#/news/${news_item.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors duration-200 line-clamp-2 group relative inline-block"
@@ -140,7 +140,7 @@ export default function NewsList() {
                     </div>
                     <div className="mt-4 flex justify-between items-center">
                       <a
-                        href={`/news-react-supabase/#/news-react-supabase/news/${news_item.id}`}
+                        href={`/news-react-supabase/#/news/${news_item.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"

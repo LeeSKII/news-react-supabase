@@ -5,8 +5,8 @@ import NewsDetail from "./pages/NewsDetail";
 function App() {
   return (
     <Routes>
-      <Route path="/news-react-supabase" element={<NewsList />} />
-      <Route path="/news-react-supabase/news/:id" element={<NewsDetail />} />
+      <Route path="/" element={<NewsList />} />
+      <Route path="/news/:id" element={<NewsDetail />} />
     </Routes>
   );
 }
