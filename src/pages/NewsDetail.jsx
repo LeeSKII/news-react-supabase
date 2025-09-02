@@ -64,30 +64,7 @@ export default function NewsDetail() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="mb-6">
-          <Link
-            to="/"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
-          >
-            <svg
-              className="w-4 h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 19l-7-7 7-7"
-              ></path>
-            </svg>
-            返回新闻列表
-          </Link>
-        </div>
-
+      <div className="max-w-5xl mx-auto px-4">
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -302,7 +279,6 @@ export default function NewsDetail() {
                       </div>
                     )}
                   </div>
-
                 </div>
               </div>
             </div>

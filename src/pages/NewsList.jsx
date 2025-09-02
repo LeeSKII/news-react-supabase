@@ -106,13 +106,15 @@ export default function NewsList() {
                 >
                   <div className="p-5 flex-1 flex flex-col">
                     <div className="mb-3">
-                      <Link
-                        to={`/news/${news_item.id}`}
+                      <a
+                        href={`/news/${news_item.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors duration-200 line-clamp-2 group relative inline-block"
                       >
                         {news_item.title || "无标题"}
                         <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-                      </Link>
+                      </a>
                     </div>
 
                     <div className="text-xs text-gray-500 mb-4">
@@ -137,8 +139,10 @@ export default function NewsList() {
                       </p>
                     </div>
                     <div className="mt-4 flex justify-between items-center">
-                      <Link
-                        to={`/news/${news_item.id}`}
+                      <a
+                        href={`/news/${news_item.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
                       >
                         <svg
@@ -156,7 +160,7 @@ export default function NewsList() {
                           />
                         </svg>
                         阅读全文
-                      </Link>
+                      </a>
                       {news_item.url && (
                         <a
                           href={news_item.url}
